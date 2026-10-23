@@ -21,8 +21,10 @@ aboutLibraries {
 //                V0.03（品牌去上游化：改名 LyricoX + 更新指向 kakadex）→
 //                V0.04（批量匹配：两阶段预览确认 + 全部匹配 + 单首入口 + 搜索结果多选）→
 //                V0.05（扫描整个媒体库：MediaStore 全库查询，绕过 SAF 逐目录授权）
-val baseVersionName = "0.07.1"
-val baseVersionCode = 29
+//                V0.07.1（移除原作者收款入口：README 捐赠段 + App 内赞助页）
+//                V0.07.2（中文曲目强制境内源优先：不论是否自定义源顺序，中文曲均优先查询网易/QQ/酷狗/咪咕）
+val baseVersionName = "0.07.2"
+val baseVersionCode = 30
 
 // 签名信息取两处：先环境变量，再仓库根目录的 signing.properties（已在 .gitignore，不入库）。
 // signing.properties 的键名与「音乐整理工具」保持一致（storeFile/storePassword/keyAlias/keyPassword），

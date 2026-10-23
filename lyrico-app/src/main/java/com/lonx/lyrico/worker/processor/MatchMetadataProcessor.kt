@@ -31,6 +31,7 @@ import com.lonx.lyrico.data.song.tag.AudioTagRepository
 import com.lonx.lyrico.domain.song.usecase.PatchSongTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.SaveAudioTagsResult
 import com.lonx.lyrico.plugin.source.SearchSourceProvider
+import com.lonx.lyrico.plugin.source.native.preferDomesticForChinese
 import com.lonx.lyrico.utils.LyricEncoder
 import com.lonx.lyrico.utils.MatchScoreDetail
 import com.lonx.lyrico.utils.MusicMatchUtils
@@ -122,15 +123,19 @@ class MatchMetadataProcessor(
             preferFileName = matchConfig.preferFileName
         )
 
-        val orderedSources = sources
-            .filter { source ->
-                enabledSourceOrder.isEmpty() || source.id in enabledSourceOrder
-            }
-            .sortedBy { source ->
-                enabledSourceOrder.indexOf(source.id).let { index ->
-                    if (index == -1) Int.MAX_VALUE else index
+        // 源顺序：用户自定义过则按其顺序，否则用注册表默认顺序。
+        // 强制：中文曲目标题/歌手含 CJK 时，境内源（网易/QQ/酷狗/咪咕）排到最前优先查询。
+        val orderedSources = (if (enabledSourceOrder.isEmpty()) {
+            sources
+        } else {
+            sources
+                .filter { it.id in enabledSourceOrder }
+                .sortedBy { source ->
+                    enabledSourceOrder.indexOf(source.id).let { index ->
+                        if (index == -1) Int.MAX_VALUE else index
+                    }
                 }
-            }
+        }).preferDomesticForChinese("${song.title.orEmpty()} ${song.artist.orEmpty()}")
 
         var bestMatch: ScoredSearchResult? = null
         var bestMatchDetail: MatchScoreDetail? = null

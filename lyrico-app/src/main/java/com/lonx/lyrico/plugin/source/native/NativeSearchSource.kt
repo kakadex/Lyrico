@@ -52,6 +52,13 @@ abstract class NativeSearchSource(
     override val coverEnabled: Boolean get() = false
     override val lyricsEnabled: Boolean get() = false
 
+    /**
+     * 是否为境内（中国大陆）数据源。
+     * 语言感知排序 [preferDomesticForChinese] 用它判断：检索词含中文时境内源优先查询。
+     * 默认 false（海外源 / 第三方插件源），境内四家各自覆写为 true。
+     */
+    open val isDomestic: Boolean get() = false
+
     override suspend fun getLyrics(song: SongSearchResult): LyricsResult? = null
 
     /**

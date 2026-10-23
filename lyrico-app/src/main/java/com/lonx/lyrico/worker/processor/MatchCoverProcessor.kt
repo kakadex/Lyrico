@@ -16,6 +16,7 @@ import com.lonx.lyrico.data.song.tag.AudioTagRepository
 import com.lonx.lyrico.domain.song.usecase.PatchSongTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.SaveAudioTagsResult
 import com.lonx.lyrico.plugin.source.SearchSourceProvider
+import com.lonx.lyrico.plugin.source.native.preferDomesticForChinese
 import com.lonx.lyrico.utils.MusicMatchUtils
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
@@ -50,9 +51,15 @@ class MatchCoverProcessor(
         }
 
         val order = config.enabledSourceOrderIds
-        val sources = searchSourceProvider.getSources(PluginSourceType.COVER)
-            .filter { order.isEmpty() || it.id in order }
-            .sortedBy { source -> order.indexOf(source.id).takeIf { it >= 0 } ?: Int.MAX_VALUE }
+        // 源顺序：用户自定义过则按其顺序，否则用注册表默认顺序。
+        // 强制：中文曲目标题/歌手含 CJK 时，境内源（网易/QQ/酷狗/咪咕）排到最前优先查询。
+        val sources = (if (order.isEmpty()) {
+            searchSourceProvider.getSources(PluginSourceType.COVER)
+        } else {
+            searchSourceProvider.getSources(PluginSourceType.COVER)
+                .filter { it.id in order }
+                .sortedBy { source -> order.indexOf(source.id).takeIf { it >= 0 } ?: Int.MAX_VALUE }
+        }).preferDomesticForChinese("${song.title.orEmpty()} ${song.artist.orEmpty()}")
         if (sources.isEmpty()) throw BatchTaskSkippedException("No enabled cover source")
         sources.forEach { source ->
             source.applyConfig(SourceRuntimeConfig(config.sourceSettings[source.id].orEmpty()))

@@ -18,6 +18,7 @@ import com.lonx.lyrico.data.model.plugin.defaultPluginFieldProcessConfig
 import com.lonx.lyrico.data.repository.SettingsRepository
 import com.lonx.lyrico.domain.SearchSourceConfigApplier
 import com.lonx.lyrico.plugin.source.SearchSourceProvider
+import com.lonx.lyrico.plugin.source.native.preferDomesticForChinese
 import com.lonx.lyrico.utils.LyricEncoder
 import com.lonx.lyrico.utils.PluginFieldPostProcessor
 import com.lonx.lyrico.utils.UiMessage
@@ -224,7 +225,7 @@ class LyricsSearchViewModel(
         sourceFlow.value.forEach { restoreCachedResult(keyword, it.id) }
         val missingSources = sourceFlow.value.filterNot { source ->
             state.value.results.containsKey(source.id)
-        }
+        }.preferDomesticForChinese(keyword)
         if (missingSources.isNotEmpty()) {
             searchSources(keyword, missingSources, forceRefresh = false)
         }
@@ -263,7 +264,7 @@ class LyricsSearchViewModel(
             val availableSources = observedSources.first()
             val selectedSourceId = state.value.selectedSourceId
             val targets = if (selectedSourceId == null) {
-                availableSources
+                availableSources.preferDomesticForChinese(keyword)
             } else {
                 availableSources.filter { it.id == selectedSourceId }
             }

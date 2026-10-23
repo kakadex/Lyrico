@@ -21,6 +21,7 @@ import com.lonx.lyrico.data.repository.SettingsRepository
 import com.lonx.lyrico.domain.song.usecase.PatchSongTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.SaveAudioTagsResult
 import com.lonx.lyrico.plugin.source.SearchSourceProvider
+import com.lonx.lyrico.plugin.source.native.preferDomesticForChinese
 import com.lonx.lyrico.utils.LyricEncoder
 import com.lonx.lyrico.utils.MusicMatchUtils
 import com.lonx.lyrico.utils.PluginFieldPostProcessor
@@ -56,7 +57,8 @@ class MatchLyricsProcessor(
 
         val sources = orderedSources(
             searchSourceProvider.getSources(PluginSourceType.LYRICS),
-            config.enabledSourceOrderIds
+            config.enabledSourceOrderIds,
+            text = "${song.title.orEmpty()} ${song.artist.orEmpty()}"
         )
         if (sources.isEmpty()) throw BatchTaskSkippedException("No enabled lyrics source")
         sources.forEach { source ->
@@ -180,10 +182,15 @@ class MatchLyricsProcessor(
 
     private fun orderedSources(
         sources: List<com.lonx.lyrico.data.model.lyrics.SearchSource>,
-        order: List<String>
-    ) = sources
-        .filter { order.isEmpty() || it.id in order }
-        .sortedBy { source -> order.indexOf(source.id).takeIf { it >= 0 } ?: Int.MAX_VALUE }
+        order: List<String>,
+        text: String = ""
+    ) = (if (order.isEmpty()) {
+        sources
+    } else {
+        sources
+            .filter { it.id in order }
+            .sortedBy { source -> order.indexOf(source.id).takeIf { it >= 0 } ?: Int.MAX_VALUE }
+    }).preferDomesticForChinese(text)
 
     private data class ScoredLyricsCandidate(
         val candidate: LyricsCandidateResult,

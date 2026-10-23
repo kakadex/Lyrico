@@ -26,6 +26,8 @@ class NeteaseSource(
     override val lyricsEnabled: Boolean = true
     override val coverEnabled: Boolean = true
 
+    override val isDomestic: Boolean get() = true
+
     /**
      * 网易的搜索接口按 IP 计频，密集请求会返回 `405 操作频繁`。
      * 实测连续几次就会触发，批量匹配时每首歌都要查一次，不加节流会成片失败。
@@ -127,6 +129,8 @@ class QQMusicSource(
     /** QQ 也提供歌词；翻译轨（trans）只有部分曲目有，有就带上，没有不影响原文。 */
     override val lyricsEnabled: Boolean = true
     override val coverEnabled: Boolean = true
+
+    override val isDomestic: Boolean get() = true
 
     override suspend fun searchSongs(
         keyword: String,
@@ -254,6 +258,8 @@ class KugouSource(
     override val key: String = "kugou"
     override val name: String = "酷狗音乐"
 
+    override val isDomestic: Boolean get() = true
+
     override suspend fun searchSongs(
         keyword: String,
         page: Int,
@@ -309,6 +315,8 @@ class MiguSource(
 
     override val key: String = "migu"
     override val name: String = "咪咕音乐"
+
+    override val isDomestic: Boolean get() = true
 
     override suspend fun searchSongs(
         keyword: String,
