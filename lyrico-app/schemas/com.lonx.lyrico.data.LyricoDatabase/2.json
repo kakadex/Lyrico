@@ -1,0 +1,168 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "936f402fffc590423c823341b77516a6",
+    "entities": [
+      {
+        "tableName": "songs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`filePath` TEXT NOT NULL, `fileName` TEXT NOT NULL, `title` TEXT, `artist` TEXT, `album` TEXT, `genre` TEXT, `trackerNumber` TEXT, `date` TEXT, `lyrics` TEXT, `durationMilliseconds` INTEGER NOT NULL, `bitrate` INTEGER NOT NULL, `sampleRate` INTEGER NOT NULL, `channels` INTEGER NOT NULL, `rawProperties` TEXT, `fileLastModified` INTEGER NOT NULL, `dbUpdateTime` INTEGER NOT NULL, `titleGroupKey` TEXT NOT NULL, `titleSortKey` TEXT NOT NULL, `artistGroupKey` TEXT NOT NULL, `artistSortKey` TEXT NOT NULL, PRIMARY KEY(`filePath`))",
+        "fields": [
+          {
+            "fieldPath": "filePath",
+            "columnName": "filePath",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "fileName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "artist",
+            "columnName": "artist",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "album",
+            "columnName": "album",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "genre",
+            "columnName": "genre",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "trackerNumber",
+            "columnName": "trackerNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lyrics",
+            "columnName": "lyrics",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "durationMilliseconds",
+            "columnName": "durationMilliseconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bitrate",
+            "columnName": "bitrate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sampleRate",
+            "columnName": "sampleRate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "channels",
+            "columnName": "channels",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rawProperties",
+            "columnName": "rawProperties",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fileLastModified",
+            "columnName": "fileLastModified",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dbUpdateTime",
+            "columnName": "dbUpdateTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titleGroupKey",
+            "columnName": "titleGroupKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titleSortKey",
+            "columnName": "titleSortKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artistGroupKey",
+            "columnName": "artistGroupKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artistSortKey",
+            "columnName": "artistSortKey",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "filePath"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_songs_titleGroupKey_titleSortKey",
+            "unique": false,
+            "columnNames": [
+              "titleGroupKey",
+              "titleSortKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_songs_titleGroupKey_titleSortKey` ON `${TABLE_NAME}` (`titleGroupKey`, `titleSortKey`)"
+          },
+          {
+            "name": "index_songs_artistGroupKey_artistSortKey",
+            "unique": false,
+            "columnNames": [
+              "artistGroupKey",
+              "artistSortKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_songs_artistGroupKey_artistSortKey` ON `${TABLE_NAME}` (`artistGroupKey`, `artistSortKey`)"
+          },
+          {
+            "name": "index_songs_fileLastModified",
+            "unique": false,
+            "columnNames": [
+              "fileLastModified"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_songs_fileLastModified` ON `${TABLE_NAME}` (`fileLastModified`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '936f402fffc590423c823341b77516a6')"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+name: 📦 发布 APK 到 GitHub Release
+
+# LyricoX 分发的最后一步：把 `release-assets` 分支里已签名的 APK 挂到 Releases 页，
+# 让访客在仓库首页右侧直接点 "Releases" 下载，不用进源码目录找。
+#
+# 为什么不在 CI 里重新编译：APK 已在本机签好名（证书/口令不进仓库，更安全），
+# release-assets 分支就是唯一分发源。CI 只做「搬运 + 建 Release」，省去 FFmpeg 全量编译。
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: 🚀 创建 Release 并上传 APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 检出 release-assets 分支
+        uses: actions/checkout@v6
+        with:
+          ref: release-assets
+
+      - name: 🚀 创建 Release（幂等重建，资产只取当前版本）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # checkout 落在工作根目录（没有 path:），gh 本来能推断仓库；仍显式指定，
+          # 避免以后有人给 checkout 加 path 时重演「fatal: not a git repository」
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # 触发来源：push tag 时 GITHUB_REF_NAME 就是版本号（如 v0.04）；
+          # workflow_dispatch 手动跑时，从 APK 文件名里反推版本号。
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            TAG="$GITHUB_REF_NAME"
+          else
+            TAG="$(ls Lyrico-*.apk | head -1 | sed -E 's/^Lyrico-([0-9]+\.[0-9]+)-.*/v\1/')"
+          fi
+          VER="${TAG#v}"
+          TITLE="$(head -1 notes.md)"
+
+          # 只挑「当前 tag 版本号」的 APK：曾经的 bug 是 `APKS=(*.apk)` 全传，
+          # 结果 v0.03 的 Release 上挂着 v0.02 的包（release-assets 换包不及时就中招）。
+          shopt -s nullglob
+          APKS=(Lyrico-"$VER"-*.apk)
+          shopt -u nullglob
+          if [ ${#APKS[@]} -eq 0 ]; then
+            echo "::error title=missing-apk::release-assets 上没有 Lyrico-$VER-*.apk（只有 $(ls *.apk 2>/dev/null | tr '\n' ' ')）"
+            exit 1
+          fi
+          echo "发布 $TAG ：${APKS[*]}"
+
+          # gh 会把非 ASCII 文件名剥成 default.txt（版本信息.txt 就是这么没的），先转 ASCII
+          INFO=()
+          if [ -f 版本信息.txt ]; then
+            cp -f 版本信息.txt version-info.txt
+            INFO=(version-info.txt)
+          fi
+
+          # 幂等重建：先清草稿，再删同 tag 旧版。
+          # --cleanup-tag=false 很关键：删 tag 会让 Release 变成「无 tag 草稿」而对外消失。
+          gh api "repos/$REPO/releases?per_page=100" \
+            -q '.[] | select(.draft == true) | .id' 2>/dev/null \
+            | while IFS= read -r ID; do
+                [ -n "$ID" ] || continue
+                echo "清理草稿 release id=$ID"
+                gh api -X DELETE "repos/$REPO/releases/$ID" || true
+              done
+          gh release delete "$TAG" --repo "$REPO" --yes --cleanup-tag=false >/dev/null 2>&1 || true
+
+          gh release create "$TAG" --repo "$REPO" "${APKS[@]}" "${INFO[@]}" \
+            --title "$TITLE" --notes-file notes.md
+          echo "::notice title=published::Release $TAG 已发布"

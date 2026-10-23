@@ -1,0 +1,10 @@
+<resources>
+    <string name="pro_activation_failed">啟用狀態儲存失敗，請重試</string>
+    <string name="pro_status_active">已啟用</string>
+    <string name="pro_settings">Pro 管理</string>
+    <string name="pro_disable">關閉 Pro</string>
+    <string name="pro_deactivation_failed">關閉失敗，請重試</string>
+    <string name="pro_disable_confirmation">是否關閉 LyricoX Pro</string>
+    <string name="pro_discovered">彩蛋已解鎖</string>
+    <string name="pro_about_summary">已解鎖 Pro 功能</string>
+</resources>

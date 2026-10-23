@@ -1,0 +1,9 @@
+[submodule "lyrico-audiotag/src/main/cpp/taglib"]
+	path = lyrico-audiotag/src/main/cpp/taglib
+	url = https://github.com/taglib/taglib.git
+[submodule "lyrico-app/src/main/cpp/quickjs-ng"]
+	path = lyrico-app/src/main/cpp/quickjs-ng
+	url = https://github.com/quickjs-ng/quickjs.git
+[submodule "lyrico-app/src/main/cpp/ffmpeg"]
+	path = lyrico-app/src/main/cpp/ffmpeg
+	url = https://github.com/FFmpeg/FFmpeg.git

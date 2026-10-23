@@ -1,0 +1,21 @@
+*.iml
+.gradle
+/.kotlin
+# 签名材料：永不入库
+signing.properties
+*.keystore
+*.jks
+*.p12
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+node_modules
+docs/.vitepress/dist
+docs/.vitepress/cache
+START-HERE.md
+FORK.md

@@ -1,0 +1,9 @@
+Lyrico is an open-source audio tag editor for Android. Manage your local music library with powerful metadata editing, a plugin system for extensible search sources, and full synced lyrics support.
+
+• Edit audio metadata, lyrics, and cover art — supports MP3, WAV, FLAC, OGG, and AAC
+• Plugin system — install community plugins to fetch metadata and lyrics from any platform
+• Synced lyrics — LRC, enhanced LRC, word-by-word, and TTML; import, export, and convert
+• Batch operations — match metadata for your entire library and rename files in bulk
+• ReplayGain (EBU R128) calculation for volume normalization
+
+No ads. No analytics. Works fully offline. Network access is optional.
