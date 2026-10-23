@@ -867,4 +867,10 @@
     <string name="duplicate_scan_keep">建議保留</string>
     <string name="duplicate_scan_delete_count">刪除 %1$d 個檔案</string>
     <string name="duplicate_scan_delete_title">刪除重複檔案？</string>
+    <string name="filename_cleanup_title">檔名清理</string>
+    <string name="filename_cleanup_entry_summary">批次去除檔名裡的廣告前綴、序號和多餘空格</string>
+    <string name="filename_cleanup_no_pending">沒有需要清理的檔名</string>
+    <string name="filename_cleanup_rename_count">重新命名 %1$d 個檔案</string>
+    <string name="filename_cleanup_rename_title">重新命名選中的檔案？</string>
+    <string name="filename_cleanup_result">已重新命名 %1$d 個 · 失敗 %2$d 個</string>
 </resources>

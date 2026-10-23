@@ -95,6 +95,7 @@ import com.lonx.lyrico.viewmodel.BatchLyricsFormatViewModel
 import com.lonx.lyrico.viewmodel.BatchTaskDetailViewModel
 import com.lonx.lyrico.viewmodel.BatchTaskListViewModel
 import com.lonx.lyrico.viewmodel.DuplicateScanViewModel
+import com.lonx.lyrico.viewmodel.FileNameCleanupViewModel
 import com.lonx.lyrico.viewmodel.BatchMatchViewModel
 import com.lonx.lyrico.viewmodel.BatchRenameViewModel
 import com.lonx.lyrico.viewmodel.BatchReplayGainViewModel
@@ -361,5 +362,6 @@ val appModule = module {
     viewModel { (taskId: String) -> BatchTaskDetailViewModel(taskId, get(), get()) }
     viewModel { BatchTaskListViewModel(get(), get(), get()) }
     viewModel { DuplicateScanViewModel(get(), get()) }
+    viewModel { FileNameCleanupViewModel(get(), get()) }
 }
 

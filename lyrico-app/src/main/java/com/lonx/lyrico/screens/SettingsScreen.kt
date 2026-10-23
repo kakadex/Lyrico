@@ -70,6 +70,7 @@ import com.ramcosta.composedestinations.generated.destinations.ArtistPosterFolde
 import com.ramcosta.composedestinations.generated.destinations.ArtistSplitSettingsDestination
 import com.ramcosta.composedestinations.generated.destinations.BatchTaskListDestination
 import com.ramcosta.composedestinations.generated.destinations.DuplicateScanDestination
+import com.ramcosta.composedestinations.generated.destinations.FilenameCleanupDestination
 import com.ramcosta.composedestinations.generated.destinations.EditFieldSettingsDestination
 import com.ramcosta.composedestinations.generated.destinations.FolderManagerDestination
 import com.ramcosta.composedestinations.generated.destinations.LyricsCleanupRulesDestination
@@ -642,6 +643,12 @@ fun SettingsScreen(
                         title = stringResource(R.string.duplicate_scan_title),
                         summary = stringResource(R.string.duplicate_scan_entry_summary),
                         onClick = { navigator.navigate(DuplicateScanDestination()) }
+                    )
+                    Action(
+                        icon = LucideIcons.Eraser, tone = PreferenceIconTone.Tools,
+                        title = stringResource(R.string.filename_cleanup_title),
+                        summary = stringResource(R.string.filename_cleanup_entry_summary),
+                        onClick = { navigator.navigate(FilenameCleanupDestination()) }
                     )
                     Action(
                         icon = LucideIcons.Logs, tone = PreferenceIconTone.Lyrics,

@@ -862,4 +862,10 @@
     <string name="duplicate_scan_keep">Keep</string>
     <string name="duplicate_scan_delete_count">Delete %1$d file(s)</string>
     <string name="duplicate_scan_delete_title">Delete duplicate files?</string>
+    <string name="filename_cleanup_title">Filename cleanup</string>
+    <string name="filename_cleanup_entry_summary">Strip ad prefixes, track numbers and extra spaces from file names</string>
+    <string name="filename_cleanup_no_pending">All file names are already clean</string>
+    <string name="filename_cleanup_rename_count">Rename %1$d file(s)</string>
+    <string name="filename_cleanup_rename_title">Rename selected files?</string>
+    <string name="filename_cleanup_result">Renamed %1$d, failed %2$d</string>
 </resources>
