@@ -260,6 +260,7 @@ interface SongDao {
               OR s.artist LIKE '%' || :query || '%'
               OR s.albumArtist LIKE '%' || :query || '%'
               OR s.album LIKE '%' || :query || '%'
+              OR s.fileName LIKE '%' || :query || '%'
               OR s.date LIKE '%' || :query || '%'
               OR s.language LIKE '%' || :query || '%'
               OR s.genre LIKE '%' || :query || '%'
@@ -274,7 +275,8 @@ interface SongDao {
                 WHEN s.artist LIKE :query || '%' THEN 1
                 WHEN s.albumArtist LIKE :query || '%' THEN 2
                 WHEN s.album LIKE :query || '%' THEN 3
-                ELSE 4
+                WHEN s.fileName LIKE :query || '%' THEN 4
+                ELSE 5
             END,
             s.title ASC,
             s.fileName ASC
