@@ -135,9 +135,9 @@ class App : Application(), SingletonImageLoader.Factory {
     companion object {
         private const val TAG = "App"
         const val ACTION_EDIT_TAG = "com.lonx.lyrico.action.EDIT_TAG"
-        const val TELEGRAM_GROUP_LINK = "https://github.com/kakadex/Lyrico/issues"
+        const val TELEGRAM_GROUP_LINK = "https://github.com/kakadex/LyricoX/issues"
         const val OWNER_ID = "kakadex"
-        const val REPO_NAME = "Lyrico"
+        const val REPO_NAME = "LyricoX"
 
         @SuppressLint("StaticFieldLeak")
         @JvmStatic

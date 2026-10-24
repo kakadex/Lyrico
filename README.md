@@ -1,8 +1,8 @@
 # LyricoX
 
-[![GitHub Release](https://img.shields.io/github/v/release/kakadex/lyrico?style=flat-square)](https://github.com/kakadex/Lyrico/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/kakadex/lyricox?style=flat-square)](https://github.com/kakadex/LyricoX/releases)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/kakadex/lyrico/total?style=flat-square)
-[![License](https://img.shields.io/github/license/kakadex/lyrico?style=flat-square)](./LICENSE)
+[![License](https://img.shields.io/github/license/kakadex/lyricox?style=flat-square)](./LICENSE)
 
 > ## Fork 声明
 >
@@ -11,9 +11,9 @@
 >
 > - 与上游项目及原作者无隶属关系，未获其背书，也不代表上游立场
 > - 版权归原作者所有，遵循 [Apache-2.0](./LICENSE)；本 fork 的修改同样以 Apache-2.0 发布
-> - **下载**：正式包在 [Releases](https://github.com/kakadex/Lyrico/releases)（自动生成）。
+> - **下载**：正式包在 [Releases](https://github.com/kakadex/LyricoX/releases)（自动生成）。
 >   当前版本 **V0.07.1**（内置在线源补歌词/封面/标签 + 批量匹配 + 查重 + 写入撤销）
-> - 本 fork 的问题请提交到[本仓库 Issues](https://github.com/kakadex/Lyrico/issues)，
+> - 本 fork 的问题请提交到[本仓库 Issues](https://github.com/kakadex/LyricoX/issues)，
 >   不要打扰上游维护者
 
 LyricoX 是一款面向 Android 的开源本地音乐标签编辑与歌词管理工具。它用于整理本地音乐库、读写音频元数据，并通过插件化搜索源补全歌词、封面和其他歌曲信息。

@@ -189,7 +189,7 @@ class NativeHttp(
         private const val RATE_LIMIT_COOLDOWN_MS = 90_000L
 
         private const val USER_AGENT =
-            "LyricoX/0.01 (+https://github.com/kakadex/Lyrico)"
+            "LyricoX/0.01 (+https://github.com/kakadex/LyricoX)"
 
         val defaultParser: Json = Json {
             ignoreUnknownKeys = true
