@@ -710,7 +710,7 @@ fun SettingsScreen(
                     Action(
                         icon = LucideIcons.NotebookPen, tone = PreferenceIconTone.Library,
                         title = stringResource(R.string.user_guide),
-                        onClick = { uriHandler.openUri("https://replica0110.github.io/Lyrico/guide/") }
+                        onClick = { uriHandler.openUri("https://gitee.com/kakadex/LyricoX/blob/LyricoX/docs/guide.md") }
                     )
                     Action(
                         icon = LucideIcons.Info, tone = PreferenceIconTone.Orange,
