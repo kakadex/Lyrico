@@ -1,0 +1,4 @@
+LyricoX v0.09.2  (versionCode 35)
+构建时间: 2026-10-24 22:59:30
+代码版本: LyricoX @ 41cec10
+Lyrico-0.09.2-41cec10-arm64-v8a.apk: 4e1dc9f8092672923c8e3e204090a9f8427110b7ecee0b730b12960ae7680f2e

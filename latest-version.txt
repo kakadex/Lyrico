@@ -1,0 +1,4 @@
+versionCode=35
+versionName=0.09.2
+apk=Lyrico-0.09.2-41cec10-arm64-v8a.apk
+url=https://gitee.com/kakadex/LyricoX/releases/tag/v0.09.2
