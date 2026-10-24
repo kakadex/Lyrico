@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
@@ -168,6 +169,7 @@ fun SettingsScreen(
     val floatingBarEffectItems = FloatingBarEffect.entries.map { stringResource(it.labelRes) }
 
     val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val audioReadPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_AUDIO
     } else {
@@ -705,6 +707,11 @@ fun SettingsScreen(
                             }
                         )
                     }
+                    Action(
+                        icon = LucideIcons.NotebookPen, tone = PreferenceIconTone.Library,
+                        title = stringResource(R.string.user_guide),
+                        onClick = { uriHandler.openUri("https://replica0110.github.io/Lyrico/guide/") }
+                    )
                     Action(
                         icon = LucideIcons.Info, tone = PreferenceIconTone.Orange,
                         title = stringResource(R.string.about_title),
