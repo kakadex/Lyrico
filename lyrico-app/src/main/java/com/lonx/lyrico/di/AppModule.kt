@@ -53,6 +53,7 @@ import com.lonx.lyrico.domain.song.usecase.OverwriteSongTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.PatchSongTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.ReadAudioTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.RenameSongUseCase
+import com.lonx.lyrico.domain.song.usecase.MoveSongUseCase
 import com.lonx.lyrico.domain.song.usecase.SaveAudioTagsUseCase
 import com.lonx.lyrico.domain.song.usecase.SynchronizeLibraryUseCase
 import com.lonx.lyrico.plugin.source.PluginSearchSourceManager
@@ -96,6 +97,7 @@ import com.lonx.lyrico.viewmodel.BatchTaskDetailViewModel
 import com.lonx.lyrico.viewmodel.BatchTaskListViewModel
 import com.lonx.lyrico.viewmodel.DuplicateScanViewModel
 import com.lonx.lyrico.viewmodel.FileNameCleanupViewModel
+import com.lonx.lyrico.viewmodel.OrganizeViewModel
 import com.lonx.lyrico.viewmodel.BatchMatchViewModel
 import com.lonx.lyrico.viewmodel.BatchRenameViewModel
 import com.lonx.lyrico.viewmodel.BatchReplayGainViewModel
@@ -273,6 +275,7 @@ val appModule = module {
     single { OverwriteSongTagsUseCase(get()) }
     single { DeleteSongsUseCase(get(), get(), get(), get()) }
     single { RenameSongUseCase(get(), get(), get(), get()) }
+    single { MoveSongUseCase(androidContext(), get()) }
     single { SynchronizeLibraryUseCase(get()) }
     single<SourcePluginRepository> { SourcePluginRepositoryImpl(get()) }
     single<LibraryScanManager> { LibraryScanManagerImpl(get(), androidContext(), get(), get(), get()) }
@@ -363,5 +366,6 @@ val appModule = module {
     viewModel { BatchTaskListViewModel(get(), get(), get()) }
     viewModel { DuplicateScanViewModel(get(), get()) }
     viewModel { FileNameCleanupViewModel(get(), get()) }
+    viewModel { OrganizeViewModel(get(), get(), get()) }
 }
 

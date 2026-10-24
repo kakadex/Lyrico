@@ -873,4 +873,12 @@
     <string name="filename_cleanup_rename_count">重新命名 %1$d 個檔案</string>
     <string name="filename_cleanup_rename_title">重新命名選中的檔案？</string>
     <string name="filename_cleanup_result">已重新命名 %1$d 個 · 失敗 %2$d 個</string>
+    <string name="organize_title">目錄整理</string>
+    <string name="organize_entry_summary">按藝人/專輯把歌曲歸位到資料夾</string>
+    <string name="organize_no_pending">沒有需要歸位的歌曲</string>
+    <string name="organize_move_count">歸位 %1$d 個檔案</string>
+    <string name="organize_move_title">移動選中的檔案？</string>
+    <string name="organize_result">已歸位 %1$d 個 · 失敗 %2$d 個</string>
+    <string name="organize_skip_media_store">來自系統媒體庫的 %1$d 首暫不支援移動，已保留原位</string>
+    <string name="organize_skip_no_artist">%1$d 首缺藝人資訊，已保留原位（可先用線上匹配補標籤）</string>
 </resources>

@@ -868,4 +868,12 @@
     <string name="filename_cleanup_rename_count">Rename %1$d file(s)</string>
     <string name="filename_cleanup_rename_title">Rename selected files?</string>
     <string name="filename_cleanup_result">Renamed %1$d, failed %2$d</string>
+    <string name="organize_title">Organize files</string>
+    <string name="organize_entry_summary">Move songs into Artist/Album folders</string>
+    <string name="organize_no_pending">Nothing to organize</string>
+    <string name="organize_move_count">Move %1$d file(s)</string>
+    <string name="organize_move_title">Move selected files?</string>
+    <string name="organize_result">Moved %1$d, failed %2$d</string>
+    <string name="organize_skip_media_store">%1$d MediaStore song(s) cannot be moved yet and were left in place</string>
+    <string name="organize_skip_no_artist">%1$d song(s) missing artist info were left in place (try online match first)</string>
 </resources>
