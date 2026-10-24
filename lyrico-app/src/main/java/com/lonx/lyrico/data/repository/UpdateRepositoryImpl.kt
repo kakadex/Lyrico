@@ -29,16 +29,12 @@ class UpdateRepositoryImpl(
         repo: String
     ): UpdateCheckResult = withContext(Dispatchers.IO) {
 
-        Log.d(TAG, "开始检查更新（Gitee 优先，GitHub 兜底）")
+        Log.d(TAG, "开始检查更新（Gitee raw 优先，GitHub 兜底）")
 
-        // ① Gitee 优先：国内直连快，且可直接给 APK 附件直链。
-        // 404（Gitee 尚无 Release）/超时/解析失败都静默回落 GitHub。
-        val gitee = runCatching {
-            fetchRelease(
-                url = "https://gitee.com/api/v5/repos/$owner/$repo/releases/latest",
-                preferApkAsset = true
-            )
-        }
+        // ① Gitee 优先：读 release-assets 分支的 latest-version.txt（raw 静态文件，
+        //    国内直连、免令牌、无 API 限流），命中则直接给 APK 附件直链。
+        //    404（尚无元数据）/超时/解析失败都静默回落 GitHub。
+        val gitee = runCatching { fetchGiteeRaw(owner, repo) }
         gitee.getOrNull()?.let {
             Log.d(TAG, "Gitee 命中，使用 Gitee 结果")
             return@withContext it
@@ -47,10 +43,7 @@ class UpdateRepositoryImpl(
 
         // ② GitHub 兜底（错误语义与原实现一致）
         try {
-            fetchRelease(
-                url = "https://api.github.com/repos/$owner/$repo/releases/latest",
-                preferApkAsset = false
-            )
+            fetchRelease("https://api.github.com/repos/$owner/$repo/releases/latest")
         } catch (e: SocketTimeoutException) {
             Log.e(TAG, "连接超时", e)
             UpdateCheckResult.TimeoutError
@@ -65,7 +58,58 @@ class UpdateRepositoryImpl(
         }
     }
 
-    private fun fetchRelease(url: String, preferApkAsset: Boolean): UpdateCheckResult {
+    /** 读 Gitee release-assets 分支的 latest-version.txt / notes.md（raw 静态文件）。 */
+    private fun fetchGiteeRaw(owner: String, repo: String): UpdateCheckResult {
+        val base = "https://gitee.com/$owner/$repo/raw/release-assets"
+
+        val meta = mutableMapOf<String, String>()
+        getText("$base/latest-version.txt").lineSequence().forEach { line ->
+            val idx = line.indexOf('=')
+            if (idx > 0) meta[line.take(idx).trim()] = line.substring(idx + 1).trim()
+        }
+        val remoteCode = meta["versionCode"]?.toIntOrNull()
+            ?: throw IOException("Gitee 元数据缺少 versionCode")
+        val apkName = meta["apk"]?.takeIf { it.isNotBlank() }
+            ?: throw IOException("Gitee 元数据缺少 apk 文件名")
+        val versionName = meta["versionName"] ?: remoteCode.toString()
+
+        Log.d(TAG, "Gitee 最新: $versionName (versionCode $remoteCode)，当前 ${BuildConfig.VERSION_CODE}")
+
+        if (remoteCode <= BuildConfig.VERSION_CODE) {
+            return UpdateCheckResult.NoUpdateAvailable
+        }
+
+        // 更新说明直接读同分支的 notes.md（读不到就给空说明，不阻断）
+        val notes = runCatching { getText("$base/notes.md") }.getOrDefault("")
+
+        // 下载地址：元数据里的 url 字段（发版脚本写入，指向 Gitee Release 页面/附件直链）；
+        // 缺省时按 Gitee Release 页面规则拼。注意 Gitee raw 对 >1MB 文件强制登录，
+        // 所以 APK 本体不能走 raw，必须走 Release 附件。
+        val downloadUrl = meta["url"]?.takeIf { it.isNotBlank() }
+            ?: "https://gitee.com/$owner/$repo/releases/tag/v$versionName"
+
+        return UpdateCheckResult.NewVersion(
+            ReleaseInfo(
+                versionName = versionName,
+                releaseNotes = notes,
+                url = downloadUrl
+            )
+        )
+    }
+
+    private fun getText(url: String): String {
+        val request = Request.Builder()
+            .url(url)
+            .header("User-Agent", "Lyrico-App")
+            .build()
+        okHttpClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
+            return response.body.string()
+        }
+    }
+
+    /** GitHub Releases API 兜底路径（保留原有错误语义）。 */
+    private fun fetchRelease(url: String): UpdateCheckResult {
         val request = Request.Builder()
             .url(url)
             .header("Accept", "application/vnd.github+json")
@@ -84,12 +128,7 @@ class UpdateRepositoryImpl(
 
             val latestVersionName = release.tag_name
             val releaseNotes = release.body.orEmpty()
-            // Gitee 场景直接给 APK 附件直链（一键下载）；GitHub 保持 Release 页面
-            val apkAsset = release.assets.firstOrNull {
-                it.name.endsWith(".apk", ignoreCase = true) && it.browser_download_url.isNotBlank()
-            }
-            val downloadUrl =
-                if (preferApkAsset && apkAsset != null) apkAsset.browser_download_url else release.html_url
+            val downloadUrl = release.html_url
 
             Log.d(
                 TAG,
